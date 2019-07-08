@@ -83,3 +83,21 @@
 	- 貸出者
 	- 貸出日
 	- 貸出ステータス
+	
+# ローカル環境構築手順
+
+## 前提ソフトウェアツール
+* git
+* python
+	* pip
+
+## 構築手順
+* 以下、mac環境の手順になります。Windows環境は適宜読み替えてください。
+```
+git clone https://github.com/kiriharat-bizsys/book-stand.git
+cd book-stand
+python -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+python manage.py runserver
+```
