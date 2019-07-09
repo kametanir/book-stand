@@ -47,20 +47,18 @@ class Item(models.Model):
     
      # 項目５　貸出ステータス
     STATUS_CHOICES = (
-            ('貸出可能', '貸出可能'),
-            ('貸出中', '貸出中'),
-            ('提供終了', '提供終了'),
+            (10, '貸出可能'),
+            (20, '貸出中'),
+            (30, '提供終了'),
         )
 
-    rent_status = models.CharField(
+    rent_status = models.IntegerField(
         verbose_name='貸出ステータス',
-        max_length=10,
         blank=False,
         null=False,
-        default='貸出可能',
+        default=10,
         choices = STATUS_CHOICES,
-        editable=False,
-        )
+       )
 
     # 以下、管理項目
     # 作成者(ユーザー)

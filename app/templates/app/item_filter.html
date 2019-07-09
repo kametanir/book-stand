@@ -72,7 +72,9 @@
                                     <p>貸出ステータス</p>
                                 </div>
                                 <div class="col-7 col-sm-9">
-                                    <p>{{ item.rent_status|default_if_none:"未選択" }}</p>
+                                    <p>{% if item.rent_status　== 10 %}貸出可能 
+                                        {% elif item.rent_status == 20 %}貸出中 
+                                        {% elif item.rent_status == 30 %}提供終了 {% endif %}</p>
                                 </div>
                             </div>
 
@@ -80,9 +82,7 @@
                                 <div class="col-12">
                                     <div class="float-right">
                                         <a class="btn btn-outline-dark " href="{% url 'detail' item.pk %}">詳細</a>
-                                        {% if request.user.id == item.created_by_id %}
                                         <a class="btn btn-outline-dark " href="{% url 'update' item.pk %}">編集</a>
-                                        {% endif %}
                                         <a class="btn btn-outline-dark " href="{% url 'delete' item.pk %}">削除</a>
                                     </div>
                                 </div>

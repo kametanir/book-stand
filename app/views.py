@@ -128,6 +128,7 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
 
         return HttpResponseRedirect(self.success_url, messages)
 
+
 class ItemDeleteView(LoginRequiredMixin, DeleteView):
     """
     ビュー：削除画面
