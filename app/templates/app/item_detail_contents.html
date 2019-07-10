@@ -30,13 +30,13 @@
         <p>{{ item.provide_start_date|date:"Y年m月d日" }}</p>
     </div>
 </div>
-    <div class="row">
-        <div class="col-5 col-sm-3">
-            <p>貸出ステータス</p>
-        </div>
-        <div class="col-7 col-sm-9">
-                <p>{% if item.rent_status　== 10 %}貸出可能 
-                    {% elif item.rent_status == 20 %}貸出中 
-                    {% elif item.rent_status == 30 %}提供終了 {% endif %}</p>
-     </div>
+<div class="row">
+    <div class="col-5 col-sm-3">
+        <p>貸出ステータス</p>
+    </div>
+    <div class="col-7 col-sm-9">
+        <p>{% if item.rent_status　== 10 %}貸出可能 
+           {% elif item.rent_status == 20 %}貸出中 
+           {% elif item.rent_status == 30 %}提供終了 {% endif %}</p>
+    </div>
 </div>

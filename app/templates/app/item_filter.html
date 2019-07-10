@@ -72,7 +72,9 @@
                                     <p>貸出ステータス</p>
                                 </div>
                                 <div class="col-7 col-sm-9">
-                                    <p>{% <form action="POST">{{ form.pulldown_all }}</form> %}</p>
+                                    <p>{% if item.rent_status　== 10 %}貸出可能 
+                                       {% elif item.rent_status == 20 %}貸出中 
+                                       {% elif item.rent_status == 30 %}提供終了 {% endif %}</p>
                                 </div>
                             </div>
 
