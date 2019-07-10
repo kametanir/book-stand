@@ -60,6 +60,21 @@ class Item(models.Model):
         choices = STATUS_CHOICES,
        )
 
+    # 項目６　貸出者
+    renter = models.CharField(
+        verbose_name='貸出者',
+        max_length=50,
+        blank=True,
+        null=True,
+    )
+
+    # 項目７ 貸出日
+    rent_date = models.DateField(
+        verbose_name='貸出日',
+        blank=True,
+        null=True,
+    )
+
     # 以下、管理項目
     # 作成者(ユーザー)
     created_by = models.ForeignKey(

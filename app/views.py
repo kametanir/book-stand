@@ -117,6 +117,7 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         logger=logging.getLogger('development')
+        logger.info(self.request.user)
     
         """
         更新処理
@@ -125,6 +126,7 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
         item.updated_by = self.request.user
         item.updated_at = timezone.now()
         item.save()
+        messages.success(self.request,"成功しました")
 
         return HttpResponseRedirect(self.success_url, messages)
 
