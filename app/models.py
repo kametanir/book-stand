@@ -4,6 +4,8 @@ from users.models import User
 
 from django.utils import timezone
 
+from django.conf import settings
+
 class Item(models.Model):
     """
     データ定義クラス
@@ -26,14 +28,6 @@ class Item(models.Model):
         verbose_name='書籍説明',
         blank=True,
         null=True,
-    )
-    # 提供者
-    provider = models.CharField(
-        verbose_name='提供者',
-        max_length=50,
-        blank=True,
-        null=True,
-        default='',
     )
 
     # 項目４ 提供開始日
@@ -75,6 +69,27 @@ class Item(models.Model):
     )
 
     # 以下、管理項目
+    # 提供者
+    provider = models.CharField(
+        verbose_name='提供者',
+        max_length=50,
+        blank=False,
+        null=False,
+        default='',
+        editable=False,
+    )
+
+    # 提供者ID
+    provide_by = models.ForeignKey(
+        User,
+        verbose_name='提供者ID',
+        blank=False,
+        null=False,
+        default=1,
+        editable=False,
+        on_delete=models.CASCADE,
+    )
+
     # 作成者(ユーザー)
     created_by = models.ForeignKey(
         User,
@@ -105,6 +120,7 @@ class Item(models.Model):
         editable=False,
     )
 
+
     # 更新時間
     updated_at = models.DateTimeField(
         verbose_name='更新時間',
@@ -112,6 +128,8 @@ class Item(models.Model):
         null=True,
         editable=False,
     )
+
+
 
     def __str__(self):
         """

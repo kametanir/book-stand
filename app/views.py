@@ -98,11 +98,14 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
         """
         登録処理
         """
+
         item = form.save(commit=False)
         item.created_by = self.request.user
         item.created_at = timezone.now()
         item.updated_by = self.request.user
         item.updated_at = timezone.now()
+        item.provider = self.request.user
+        item.provide_by = self.request.user
         item.save()
 
         return HttpResponseRedirect(self.success_url)
@@ -122,6 +125,10 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
         """
         更新処理
         """
+            
+        logger=logging.getLogger('development')
+        logger.info(self.request.POST.getlist('rent_status'))
+        
         item = form.save(commit=False)
         item.updated_by = self.request.user
         item.updated_at = timezone.now()
