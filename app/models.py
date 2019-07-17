@@ -27,13 +27,12 @@ class Item(models.Model):
         blank=True,
         null=True,
     )
-
-    # 項目３　提供者
+    # 提供者
     provider = models.CharField(
         verbose_name='提供者',
         max_length=50,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         default='',
     )
 

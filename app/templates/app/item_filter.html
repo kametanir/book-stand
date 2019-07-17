@@ -77,7 +77,22 @@
                                        {% elif item.rent_status == 30 %}提供終了 {% endif %}</p>
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
+                                   <p>貸出者</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>{{ item.renter|default_if_none:"" }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
+                                    <p>貸出日</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>{{ item.rent_date|date:"Y年m月d日" }}</p>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="float-right">
