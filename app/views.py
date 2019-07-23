@@ -118,15 +118,15 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ItemForm
     success_url = reverse_lazy('index')
 
+    def get_absolute_url():
+        return '/update/%i/' % self.pk
 
     def form_valid(self, form):
         logger=logging.getLogger('development')
         logger.info(self.request.POST.get('rent_status'))  
         logger.info(type(str(self.request.user.id)))
         logger.info(type(self.request.POST.get('renter')))  
-        
-    #    error_url = reverse_lazy('detail',self.request.get_full_path().split("/")[2])
-        
+                
         """
         更新処理
         """
@@ -134,7 +134,7 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
         if self.request.POST.get('rent_status') == "10" and str(self.request.user.id) != self.request.POST.get('renter'):
  
             messages.error(self.request,"貸出者以外は貸出ステータスを「貸出中」更新できません！")
-            return HttpResponseRedirect(self.success_url, messages)
+            return HttpResponseRedirect(self.get_update_url(), messages)
             
          
         else:
