@@ -118,8 +118,9 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ItemForm
     success_url = reverse_lazy('index')
 
-    def get_absolute_url():
-        return '/update/%i/' % self.pk
+    def get_update_url(self):
+        pk = self.kwargs['pk']
+        return reverse_lazy('update', kwargs={'pk': pk})
 
     def form_valid(self, form):
         logger=logging.getLogger('development')
