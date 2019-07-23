@@ -8,10 +8,12 @@ from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
 import logging
+from django.http import HttpResponse
 
 from .filters import ItemFilterSet
 from .forms import ItemForm
 from .models import Item
+from users.models import User
 
 
 # 未ログインのユーザーにアクセスを許可する場合は、LoginRequiredMixinを継承から外してください。
@@ -104,8 +106,6 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
         item.created_at = timezone.now()
         item.updated_by = self.request.user
         item.updated_at = timezone.now()
-        item.provider = self.request.user
-        item.provide_by = self.request.user
         item.save()
 
         return HttpResponseRedirect(self.success_url)
@@ -118,24 +118,32 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ItemForm
     success_url = reverse_lazy('index')
 
+
     def form_valid(self, form):
         logger=logging.getLogger('development')
-        logger.info(self.request.user)
-    
+        logger.info(self.request.POST.get('rent_status'))  
+        logger.info(type(str(self.request.user.id)))
+        logger.info(type(self.request.POST.get('renter')))  
+        
+    #    error_url = reverse_lazy('detail',self.request.get_full_path().split("/")[2])
+        
         """
         更新処理
         """
-            
-        logger=logging.getLogger('development')
-        logger.info(self.request.POST.getlist('rent_status'))
-        
-        item = form.save(commit=False)
-        item.updated_by = self.request.user
-        item.updated_at = timezone.now()
-        item.save()
-        messages.success(self.request,"成功しました")
 
-        return HttpResponseRedirect(self.success_url, messages)
+        if self.request.POST.get('rent_status') == "10" and str(self.request.user.id) != self.request.POST.get('renter'):
+ 
+            messages.error(self.request,"貸出者以外は貸出ステータスを「貸出中」更新できません！")
+            return HttpResponseRedirect(self.success_url, messages)
+            
+         
+        else:
+            item = form.save(commit=False)
+            item.updated_by = self.request.user
+            item.updated_at = timezone.now()
+            item.save()
+            messages.success(self.request,"成功しました")
+            return HttpResponseRedirect(self.success_url, messages)
 
 
 class ItemDeleteView(LoginRequiredMixin, DeleteView):

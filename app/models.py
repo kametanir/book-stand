@@ -14,6 +14,12 @@ class Item(models.Model):
     ・公式 モデルフィールドリファレンス
     https://docs.djangoproject.com/ja/2.1/ref/models/fields/
     """
+
+    #提供者・貸出者の選択肢
+    USER_CHOICES = (
+        User.objects.values_list('id', 'username', flat=False)
+    )
+
     # 項目１　書籍名
     book_name = models.CharField(
         verbose_name='書籍名',
@@ -28,6 +34,15 @@ class Item(models.Model):
         verbose_name='書籍説明',
         blank=True,
         null=True,
+    )
+
+    # 提供者
+    provider = models.IntegerField(
+        verbose_name='提供者',
+        blank=False,
+        null=False,
+        default=1,
+        choices = USER_CHOICES,
     )
 
     # 項目４ 提供開始日
@@ -54,11 +69,11 @@ class Item(models.Model):
        )
 
     # 項目６　貸出者
-    renter = models.CharField(
+    renter = models.IntegerField(
         verbose_name='貸出者',
-        max_length=50,
         blank=True,
         null=True,
+        choices = USER_CHOICES,
     )
 
     # 項目７ 貸出日
@@ -69,26 +84,6 @@ class Item(models.Model):
     )
 
     # 以下、管理項目
-    # 提供者
-    provider = models.CharField(
-        verbose_name='提供者',
-        max_length=50,
-        blank=False,
-        null=False,
-        default='',
-        editable=False,
-    )
-
-    # 提供者ID
-    provide_by = models.ForeignKey(
-        User,
-        verbose_name='提供者ID',
-        blank=False,
-        null=False,
-        default=1,
-        editable=False,
-        on_delete=models.CASCADE,
-    )
 
     # 作成者(ユーザー)
     created_by = models.ForeignKey(
