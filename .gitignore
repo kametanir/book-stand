@@ -1,0 +1,2 @@
+# vscodeの設定ファイルをgit管理対象から外す
+.vscode/
