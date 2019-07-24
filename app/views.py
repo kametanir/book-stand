@@ -102,11 +102,13 @@ class ItemCreateView(LoginRequiredMixin, CreateView):
         """
 
         item = form.save(commit=False)
+        item.provider=self.request.user.id
         item.created_by = self.request.user
         item.created_at = timezone.now()
         item.updated_by = self.request.user
         item.updated_at = timezone.now()
         item.save()
+
 
         return HttpResponseRedirect(self.success_url)
 
@@ -125,25 +127,55 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         logger=logging.getLogger('development')
         logger.info(self.request.POST.get('rent_status'))  
-        logger.info(type(str(self.request.user.id)))
-        logger.info(type(self.request.POST.get('renter')))  
-                
+        logger.info(self.request.user.id)
+        logger.info(self.request.POST.get('renter'))  
+        logger.info(self.request.POST.get('provider'))
+
         """
         更新処理
         """
+        
+        #貸出ステータス＝10（貸出可能）へ更新する場合
+        if self.request.POST.get('rent_status') == "10" :
 
-        if self.request.POST.get('rent_status') == "10" and str(self.request.user.id) != self.request.POST.get('renter'):
- 
-            messages.error(self.request,"貸出者以外は貸出ステータスを「貸出中」更新できません！")
-            return HttpResponseRedirect(self.get_update_url(), messages)
+            #ログインユーザー＝貸出者の場合
+            if str(self.request.user.id) == self.request.POST.get('renter'):
+                item = form.save(commit=False)
+                #item.renter = None
+                item.updated_by = self.request.user
+                item.updated_at = timezone.now()
+                item.save()
+                messages.success(self.request,"返却処理が成功しました")
+                return HttpResponseRedirect(self.success_url, messages)
+
+            #ログインユーザー≠貸出者の場合
+            else:
+                messages.error(self.request,"貸出者以外は貸出ステータスを「貸出中」に更新できません！")
+                return HttpResponseRedirect(self.get_update_url(), messages)
+
+        #貸出ステータス＝30（提供終了）かつ ログインユーザー≠提供者 の場合エラー
+        elif self.request.POST.get('rent_status') == "30":
+            if str(self.request.user.id) == self.request.POST.get('provider'):
+                item = form.save(commit=False)
+                item.updated_by = self.request.user
+                item.updated_at = timezone.now()
+                item.save()
+                messages.success(self.request,"ご提供ありがとうございました。")
+                return HttpResponseRedirect(self.success_url, messages)
             
-         
+            else:
+                messages.error(self.request,"提供者以外は貸出ステータスを「提供終了」に更新できません！")
+                return HttpResponseRedirect(self.get_update_url(), messages)
+
+
+        #貸出ステータス=20（貸出中）へ更新する場合
         else:
             item = form.save(commit=False)
+            item.renter=self.request.user.id
             item.updated_by = self.request.user
             item.updated_at = timezone.now()
             item.save()
-            messages.success(self.request,"成功しました")
+            messages.success(self.request,"貸出処理が成功しました")
             return HttpResponseRedirect(self.success_url, messages)
 
 

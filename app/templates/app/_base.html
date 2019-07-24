@@ -27,13 +27,6 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="Navber">
         <ul class="navbar-nav">
-                <li class="nav-item">
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                </li>
-            </ul>
-        <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'admin:index' %}">管理画面</a>
             </li>
@@ -45,6 +38,16 @@
         </ul>
     </div>
 </nav>
+
+{% if messages %}
+    <ul style="list-style:none;" class="messages_ul">
+		{% for message in messages %}
+			<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ message }}</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+
+
 {% block content %}
 {% endblock %}
 
@@ -58,6 +61,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.ja.min.js"></script>
 <script src="{% static "app/js/plugins/responsive-paginate.js" %}"></script>
 <script src="{% static "app/js/app.js" %}"></script>
+
+<script>
+    // notificationを×押下で閉じれるように。
+    for (const element of document.querySelectorAll('.notification > .delete')) {
+        element.addEventListener('click', e => {
+            e.target.parentElement.classList.add('is-hidden');
+        });
+    }
+
+    // ナビバーの開閉を設定
+    for (const element of document.querySelectorAll('.navbar-burger')) {
+        const menuId = element.dataset.target;
+        const menu = document.getElementById(menuId);
+        element.addEventListener('click', e => {
+            element.classList.toggle('is-active');
+            menu.classList.toggle('is-active');
+        });
+    }
+
+</script>
+
 </body>
 
 </html>

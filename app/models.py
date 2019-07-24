@@ -5,6 +5,7 @@ from users.models import User
 from django.utils import timezone
 
 from django.conf import settings
+from django.http import request
 
 class Item(models.Model):
     """
@@ -36,15 +37,6 @@ class Item(models.Model):
         null=True,
     )
 
-    # 提供者
-    provider = models.IntegerField(
-        verbose_name='提供者',
-        blank=False,
-        null=False,
-        default=1,
-        choices = USER_CHOICES,
-    )
-
     # 項目４ 提供開始日
     provide_start_date = models.DateField(
         verbose_name='提供開始日',
@@ -68,13 +60,7 @@ class Item(models.Model):
         choices = STATUS_CHOICES,
        )
 
-    # 項目６　貸出者
-    renter = models.IntegerField(
-        verbose_name='貸出者',
-        blank=True,
-        null=True,
-        choices = USER_CHOICES,
-    )
+
 
     # 項目７ 貸出日
     rent_date = models.DateField(
@@ -84,6 +70,25 @@ class Item(models.Model):
     )
 
     # 以下、管理項目
+    # 提供者
+    provider = models.IntegerField(
+        verbose_name='提供者',
+        blank=False,
+        null=False,
+        default=1,
+        choices = USER_CHOICES,
+        #editable=False,
+    )
+
+
+    #　貸出者
+    renter = models.IntegerField(
+        verbose_name='貸出者',
+        blank=True,
+        null=True,
+        choices = USER_CHOICES,
+        #editable=False,
+    )
 
     # 作成者(ユーザー)
     created_by = models.ForeignKey(
