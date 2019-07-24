@@ -5,7 +5,10 @@
 *.log
 *.pot
 *.pyc
+<<<<<<< HEAD
 *.exe
+=======
+>>>>>>> 04127d65ac723f3805e0ed5a3d183a82509a8f0f
 __pycache__/
 local_settings.py
 db.sqlite3
@@ -24,4 +27,7 @@ media
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+<<<<<<< HEAD
 env
+=======
+>>>>>>> 04127d65ac723f3805e0ed5a3d183a82509a8f0f

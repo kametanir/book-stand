@@ -40,7 +40,11 @@
 </nav>
 
 {% if messages %}
+<<<<<<< HEAD
     <ul style="list-style:none;" class="messages_ul">
+=======
+	<ul class="messages_ul">
+>>>>>>> 04127d65ac723f3805e0ed5a3d183a82509a8f0f
 		{% for message in messages %}
 			<li class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ message }}</li>
 		{% endfor %}
