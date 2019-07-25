@@ -16,10 +16,6 @@ class Item(models.Model):
     https://docs.djangoproject.com/ja/2.1/ref/models/fields/
     """
 
-    #提供者・貸出者の選択肢
-    USER_CHOICES = (
-        User.objects.values_list('id', 'username', flat=False)
-    )
 
     # 項目１　書籍名
     book_name = models.CharField(
@@ -70,6 +66,11 @@ class Item(models.Model):
     )
 
     # 以下、管理項目
+    #提供者・貸出者の選択肢
+    USER_CHOICES = (
+        User.objects.values_list('id', 'full_name', flat=False)
+    )
+    
     # 提供者
     provider = models.IntegerField(
         verbose_name='提供者',
