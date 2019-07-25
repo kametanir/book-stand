@@ -131,6 +131,9 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
         logger.info(self.request.POST.get('renter'))  
         logger.info(self.request.POST.get('provider'))
 
+        pk = self.kwargs['pk']
+        renter = Item.objects.values('renter').get(pk=pk)
+
         """
         更新処理
         """
@@ -139,9 +142,15 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
         if self.request.POST.get('rent_status') == "10" :
 
             #ログインユーザー＝貸出者の場合
-            if str(self.request.user.id) == self.request.POST.get('renter'):
+            if self.request.user.id == renter.get('renter'):
+
+                logger=logging.getLogger('development')
+                aaa = Item.objects.values('renter').get(pk=pk)
+                logger.info(type(aaa.get('renter')))
+                logger.info(type(self.request.user.id))
+
                 item = form.save(commit=False)
-                #item.renter = None
+                item.renter = None
                 item.updated_by = self.request.user
                 item.updated_at = timezone.now()
                 item.save()
@@ -153,16 +162,17 @@ class ItemUpdateView(LoginRequiredMixin, UpdateView):
                 messages.error(self.request,"貸出者以外は貸出ステータスを「貸出中」に更新できません！")
                 return HttpResponseRedirect(self.get_update_url(), messages)
 
-        #貸出ステータス＝30（提供終了）かつ ログインユーザー≠提供者 の場合エラー
+        #貸出ステータス＝30（提供終了）の場合
         elif self.request.POST.get('rent_status') == "30":
-            if str(self.request.user.id) == self.request.POST.get('provider'):
+            #ログインユーザー=提供者の場合
+            if str(self.request.user.id) == renter.get('provider'):
                 item = form.save(commit=False)
                 item.updated_by = self.request.user
                 item.updated_at = timezone.now()
                 item.save()
                 messages.success(self.request,"ご提供ありがとうございました。")
                 return HttpResponseRedirect(self.success_url, messages)
-            
+            #ログインユーザー≠貸出者の場合
             else:
                 messages.error(self.request,"提供者以外は貸出ステータスを「提供終了」に更新できません！")
                 return HttpResponseRedirect(self.get_update_url(), messages)

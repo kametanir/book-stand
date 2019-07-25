@@ -78,7 +78,7 @@ class Item(models.Model):
         null=False,
         default=1,
         choices = USER_CHOICES,
-        #editable=False,
+        editable=False,
     )
 
 
@@ -88,7 +88,7 @@ class Item(models.Model):
         blank=True,
         null=True,
         choices = USER_CHOICES,
-        #editable=False,
+        editable=False,
     )
 
     # 作成者(ユーザー)
