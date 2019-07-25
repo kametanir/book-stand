@@ -7,8 +7,10 @@ from django.utils import timezone
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
-import logging
 from django.http import HttpResponse
+
+import logging
+import requests
 
 from .filters import ItemFilterSet
 from .forms import ItemForm
@@ -79,12 +81,26 @@ class ItemDetailView(LoginRequiredMixin, DetailView):
     """
     model = Item
 
+    # def rakuten_book_api(request):
+    #     API_Key = '1079306613313679135'
+    #     ISBN = '9784802511193'
+    #     url = 'https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404'
+    #     query = {
+    #         format : 'json',
+    #         isbn : ISBN,
+    #         applicationId : API_Key
+    #     }
+
+    #     r = requests.get(url, params=query)
+    #     print("response", r.json())
+
     def get_context_data(self, **kwargs):
         """
         表示データの設定
         """
         # 表示データの追加はここで 例：
         # kwargs['sample'] = 'sample'
+        # self.rakuten_book_api()
         return super().get_context_data(**kwargs)
 
 
