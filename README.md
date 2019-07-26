@@ -101,3 +101,13 @@ source env/bin/activate
 pip install -r requirements.txt
 python manage.py runserver
 ```
+
+##Models.py修正内容をDBに反映コマンド
+* 変更内容を含んだマイグレーシするョンファイルを生成
+```
+$ python manage.py makemigrations
+```
+* マイグレーションファイルを実際のDBにSQLを発行して反映
+```
+$ python manage.py migrate
+```
